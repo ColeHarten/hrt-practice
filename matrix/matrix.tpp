@@ -44,6 +44,19 @@ T& matrix<T>::get(int i, int j) {
 }
 
 template <typename T>
+std::pair<int,int> matrix<T>::shape() {
+    return {r,c};
+}
+
+template <typename T>
+void matrix<T>::reshape(int rows, int cols) {
+    assert(r*c == rows*cols);
+
+    r = rows;
+    c = cols;
+}
+
+template <typename T>
 void matrix<T>::transpose() {
     transposed = !transposed;
     std::swap(r,c);

@@ -4,7 +4,6 @@
 #include <assert.h>
 #include <cstring>
 #include <iostream>
-#include <type_traits>
 #include <random>
 
 template <typename T>
@@ -19,6 +18,9 @@ public:
     ~matrix();
 
     T& get(int i, int j);
+
+    std::pair<int,int> shape();
+    void reshape(int rows, int cols);
 
     void transpose();
     void print();
