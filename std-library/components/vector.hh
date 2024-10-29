@@ -3,16 +3,19 @@
 
 #include <stdlib.h>
 #include <cstring>
+#include <algorithm>
 
 namespace my_std {
 
 template <typename T>
 class vector {
 private:
-    static constexpr size_t defaultSize_ = 10;
+    static constexpr size_t default_size_ = 10;
     size_t len_;
     size_t size_;
     T* arr;
+
+    void try_shrink_();
 public:
     vector();
     vector(size_t len);
@@ -28,6 +31,10 @@ public:
     void push_back(T val);
     void erase(size_t i);
     void erase(size_t l, size_t r);
+
+    void empty();
+
+    void insert(size_t at, T val);
 };
 
 #include "vector.tpp"

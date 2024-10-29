@@ -5,5 +5,6 @@
 
 #include "components/array.hh"
 #include "components/vector.hh"
+#include "components/list.hh"
 
 #endif

@@ -4,9 +4,9 @@ using my_std::vector;
 
 template <typename T>
 vector<T>::vector() {
-    arr = new T[defaultSize_];
+    arr = new T[default_size_];
     size_ = 0;
-    len_ = defaultSize_;
+    len_ = default_size_;
 }
 
 template <typename T>
@@ -28,6 +28,18 @@ vector<T>::vector(size_t len, T val) {
 template <typename T>
 vector<T>::~vector() {
     delete arr;
+}
+
+template <typename T>
+void vector<T>::try_shrink_() {
+    if(size_ * 2 < len_) {
+        len_ = std::max(size_ * 2, default_size_);
+        T* tmp = new T[len_];
+
+        memcpy(tmp, arr, sizeof(T) * size_);
+        delete arr;
+        arr = tmp;
+    }
 }
 
 template <typename T>
@@ -56,6 +68,8 @@ void vector<T>::erase(size_t i) {
     memmove(&arr[i], &arr[i+1], sizeof(T) * (size_ - i - 1));
 
     --size_;
+
+    try_shrink_();
 }
 
 template <typename T>
@@ -67,11 +81,29 @@ void vector<T>::erase(size_t l, size_t r) {
 
     size_ -= (r - l + 1);
 
-    if(size_ * 2 < len_ && size_ > defaultSize_) {
-        T* tmp = new T[size_ * 2];
-        memcpy(tmp, arr, sizeof(T) * size_);
-        len_ = size_ * 2;
+    try_shrink_();
+}
+
+template <typename T>
+void vector<T>::empty() {
+    size_ = 0;
+    
+    try_shrink_();
+
+    memset(arr, 0, sizeof(T) * len_);
+}
+
+template <typename T>
+void vector<T>::insert(size_t at, T val) {
+    if(size_ == len_){
+        len_ *= 2;
+        T* tmp = new T[len_];
+        memcpy(tmp, arr, size_*sizeof(T));
         delete arr;
         arr = tmp;
     }
+
+    memmove(&arr[at+1], &arr[at], sizeof(T)*(size_ - at));
+    arr[at] = val;
+    ++size_;
 }
